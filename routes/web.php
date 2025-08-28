@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\IndustryController;
 use App\Http\Controllers\Admin\JobController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\WithdrawReasonController;
 use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\Auth\CompanyAuthController;
 use App\Http\Controllers\Auth\ProviderController;
@@ -68,6 +69,8 @@ Route::get('user/applied-jobs', [JobApplicationController::class, 'appliedJobs']
 Route::get('user/jobs/{job}/apply', [JobApplicationController::class, 'showForm'])->name('user.jobs.apply')->middleware(['auth', 'user']);
 Route::post('user/jobs/upload-resume', [JobApplicationController::class, 'uploadResume'])->name('user.jobs.upload.resume')->middleware(['auth', 'user']);
 Route::post('user/jobs/apply/{job}', [JobApplicationController::class, 'submitApplication'])->name('user.jobs.submit.application')->middleware(['auth', 'user']);
+Route::post('/applications/{id}/withdraw', [JobApplicationController::class, 'withdraw'])->name('applications.withdraw')->middleware('auth', 'user');
+
 
 
 //  ---Admin Routes--
@@ -87,5 +90,12 @@ Route::patch('admin/users/{user}/toggle-status', [UserController::class, 'toggle
 Route::get('admin/jobs', [JobController::class, 'index'])->middleware(['auth', 'admin'])->name('admin.jobs.index');
 Route::patch('admin/jobs/{job}/toggle-status', [JobController::class, 'toggleStatus'])->middleware(['auth', 'admin'])->name('admin.jobs.toggleStatus');
 Route::delete('admin/jobs/{job}', [JobController::class, 'destroy'])->middleware(['auth', 'admin'])->name('admin.jobs.destroy');
+
+Route::get('admin/withdraw-reasons', [WithdrawReasonController::class, 'index'])->middleware(['auth', 'admin'])->name('admin.withdraw-reasons.index');
+Route::get('admin/withdraw-reasons/create', [WithdrawReasonController::class, 'create'])->middleware(['auth', 'admin'])->name('admin.withdraw-reasons.create');
+Route::post('admin/withdraw-reasons', [WithdrawReasonController::class, 'store'])->middleware(['auth', 'admin'])->name('admin.withdraw-reasons.store');
+Route::get('admin/withdraw-reasons/{withdraw_reason}/edit', [WithdrawReasonController::class, 'edit'])->middleware(['auth', 'admin'])->name('admin.withdraw-reasons.edit');
+Route::put('admin/withdraw-reasons/{withdraw_reason}', [WithdrawReasonController::class, 'update'])->middleware(['auth', 'admin'])->name('admin.withdraw-reasons.update');
+Route::delete('admin/withdraw-reasons/{withdraw_reason}', [WithdrawReasonController::class, 'destroy'])->middleware(['auth', 'admin'])->name('admin.withdraw-reasons.destroy');
 
 require __DIR__ . '/auth.php';

@@ -16,7 +16,6 @@ class UserDashboardController extends Controller
         if ($user->is_blocked) {
             Auth::logout();
             return redirect()->route('login')->with('error', 'Your account has been blocked.');
-
         }
         $myJobs = JobPost::latest()->get();
         $latestJob = JobPost::where('job_status', 'active')->latest()->first();

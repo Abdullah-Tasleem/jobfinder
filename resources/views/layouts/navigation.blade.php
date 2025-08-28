@@ -17,7 +17,7 @@
                 @endauth
                 <div class="shrink-0 flex items-center">
                     @auth
-                        <a href="{{ $dashboardRoute }}">
+                        <a href="{{ route('home') }}">
                             <x-application-logo class="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200" />
                         </a>
                     @else
@@ -57,6 +57,9 @@
                             <x-nav-link :href="route('admin.jobs.index')" :active="request()->routeIs('admin.jobs.*')">
                                 {{ __('Manage Jobs') }}
                             </x-nav-link>
+                            <x-nav-link :href="route('admin.withdraw-reasons.index')" :active="request()->routeIs('admin.withdraw-reasons.*')">
+                                {{ __('Manage Reasons') }}
+                            </x-nav-link>
                         @else
                             <x-nav-link :href="$dashboardRoute" :active="request()->routeIs($activeDashboardPattern)">
                                 {{ __('Dashboard') }}
@@ -90,6 +93,9 @@
                     </x-slot>
 
                     <x-slot name="content">
+                        <x-dropdown-link href="{{ route('home') }}">
+                            {{ __('Home') }}
+                        </x-dropdown-link>
                         <x-dropdown-link :href="route('profile.edit')">
                             {{ __('Profile') }}
                         </x-dropdown-link>

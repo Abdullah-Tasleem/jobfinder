@@ -39,7 +39,7 @@
                         <div class="sticky top-4 self-start">
                             <div class="bg-gray-50 border border-gray-200 rounded-lg p-6 shadow-sm flex flex-col
                                     max-h-[calc(100vh-2rem)] overflow-y-auto"
-                                id="job-details" style="max-height: calc(100vh - 2rem); overflow-y: auto;">
+                                id="job-details">
                                 @if ($latestJob)
                                     <div class="my-3">
                                         <h3 class="text-2xl font-bold mb-2">{{ $latestJob->job_title }}</h3>
@@ -80,9 +80,8 @@
                                             {{ $latestJob->job_type }}
                                         </div>
                                     </div>
+                                    <hr class="my-4 border-t bg-black" />
 
-                                    <hr class="my-6"
-                                        style="border: none; height: 3px; background-color: black; filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));" />
 
                                     <div class="overflow-y-auto" style="max-height: 350px;">
                                         <div class="my-6">
@@ -93,8 +92,7 @@
                                             </div>
                                         </div>
 
-                                        <hr class="my-4"
-                                            style="border: none; height: 3px; background-color: black; filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));" />
+                                                                            <hr class="my-4 border-t bg-black" />
 
                                         <div class="mb-4 leading-loose line">
                                             <h2 class="font-semibold text-lg mb-1">Full Job description</h2>
@@ -155,7 +153,8 @@
               <div class="h-6 w-24 bg-gray-300 rounded-full"></div>
             </div>
 
-            <hr class="my-6 border-none h-1 bg-black shadow-md" />
+            <hr class="my-4 border-t bg-black" />
+
 
             <!-- Location -->
             <div>
@@ -163,7 +162,7 @@
               <div class="h-4 w-1/2 bg-gray-300 rounded"></div>
             </div>
 
-            <hr class="my-4 border-none h-1 bg-black shadow-md" />
+                                    <hr class="my-4 border-t bg-black" />
 
             <!-- Job Description -->
             <div>
@@ -227,7 +226,8 @@
             </div>
           </div>
 
-          <hr class="my-6 border-none h-1 bg-black shadow-md" />
+                      <hr class="my-4 border-t bg-black" />
+
 
           <!-- Scrollable content grows dynamically -->
           <div class="overflow-y-auto flex-1">
@@ -239,7 +239,8 @@
               </div>
             </div>
 
-            <hr class="my-4 border-none h-1 bg-black shadow-md" />
+                        <hr class="my-4 border-t bg-black" />
+
 
             <div class="mb-4 leading-loose">
               <h2 class="font-semibold text-lg mb-1">Full Job Description</h2>

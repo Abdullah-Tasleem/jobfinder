@@ -20,7 +20,7 @@
                         <tbody>
                             @foreach ($jobs as $job)
                                 <tr class="text-center">
-                                    <td class="px-4 py-2 border">{{ $job->id }}</td>
+                                    <td class="px-4 py-2 border">{{ $loop->iteration }}</td>
                                     <td class="px-4 py-2 border">{{ $job->job_title }}</td>
                                     <td class="px-4 py-2 border">{{ $job->company->company_name ?? 'N/A' }}</td>
                                     <td class="px-4 py-2 border">
@@ -29,7 +29,7 @@
                                                 class="px-2 py-1 text-xs bg-green-200 text-green-800 rounded">Active</span>
                                         @else
                                             <span
-                                                class="px-2 py-1 text-xs bg-yellow-200 text-yellow-800 rounded">Inactive</span>
+                                                class="px-2 py-1 text-xs bg-yellow-200 text-yellow-800 rounded">Pending</span>
                                         @endif
                                     </td>
                                     <td class="px-4 py-2 border flex justify-center gap-2">
@@ -58,7 +58,9 @@
                             @endforeach
                         </tbody>
                     </table>
-
+                    <div class="mt-4">
+                        {{ $jobs->links() }}
+                    </div>
                 </div>
             </div>
         </div>

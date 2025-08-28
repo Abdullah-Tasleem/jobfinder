@@ -1,110 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Job Finder</title>
-
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css"
         integrity="sha512-DxV+EoADOkOygM4IR9yXP8Sb2qwgidEmeqAEmDKIOfPRQZOWbXCzLC6vjbZyy0vPisbH2SyW27+ddLVCN+OMzQ=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-    <!-- Bootstrap Icons -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="{{ asset('build/assets/css/main.css') }}">
+    <!-- Custom CSS removed: now using only Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
 
-<body>
-    <nav class="navbar navbar-expand-lg bg-white border-bottom px-4 py-2">
-        <div class="container-fluid">
+<body style="font-family: 'Poppins', sans-serif;">
+    <nav class="bg-white border-b px-4 py-4">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
             <!-- Left: Logo + Home -->
-            <a class="navbar-brand d-flex align-items-center" href="#">
-                <img src="{{ asset('design.png') }}" alt="Logo" height="20" width="40" class="me-2">
-                <p class="mb-0">Home</p>
+            <a class="flex items-center" href="{{ route('home') }}">
+                <img src="{{ asset('design.png') }}" alt="Logo" class="h-5 w-10 mr-2" />
+                <span class="font-bold text-lg">Home</span>
             </a>
 
             <!-- Right: Links -->
-            <div class="ms-auto d-flex align-items-center gap-2 pe-3">
+            <div class="flex items-center gap-2 ml-auto pr-3">
                 @guest
-                    <a class="btn btn-outline-dark btn-sm px-4" href="{{ route('login') }}">
+                    <a class="border border-gray-800 text-gray-800 rounded px-4 py-1 text-sm hover:bg-gray-100 transition"
+                        href="{{ route('login') }}">
                         Sign In
                     </a>
-
-                    <a class="btn btn-primary btn-sm px-4 text-white" href="{{ route('company.registerform') }}">
+                    <a class="bg-blue-600 text-white rounded px-4 py-1 text-sm hover:bg-blue-700 transition"
+                        href="{{ route('company.registerform') }}">
                         Company / Post Job
                     </a>
                 @endguest
                 @auth
                     @if (auth()->user()->type === 'user')
-                        <a href="{{ route('saved.jobs') }}" class="text-dark position-relative pe-3">
-                            <i class="bi bi-bookmark-fill fs-5 "></i>
+                        <a href="{{ route('saved.jobs') }}" class="relative text-gray-800 pr-3">
+                            <i class="bi bi-bookmark-fill text-xl"></i>
                             @if (session('saved_jobs_count', 0) > 0)
                                 <span
-                                    class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                                    {{ session('saved_jobs_count') }}
-                                </span>
+                                    class="absolute -top-2 -right-2 bg-red-600 text-white rounded-full px-2 py-0.5 text-xs">{{ session('saved_jobs_count') }}</span>
                             @endif
                         </a>
                     @endif
+                    <a href="profile">
+                        <i class="fa-solid fa-user text-xl"></i>
+                    </a>
                 @endauth
-                <a href="profile">
-                    <i class="fa-solid fa-user fs-5 "></i>
-                </a>
             </div>
         </div>
     </nav>
 
     <main>
-        <div class="container mt-4">
-            <div class="row justify-content-center">
-                <div class="col-lg-10">
-                    <form id="jobSearchForm" action="{{ route('jobs.search') }}" method="GET">
-                        <div
-                            class="bg-white p-4 rounded shadow d-flex flex-column flex-md-row align-items-stretch gap-3">
-                            <!-- Keyword / Company -->
-                            <div class="flex-fill">
-                                <label class="form-label visually-hidden" for="keyword">Keyword</label>
-                                <div class="input-group">
-                                    <span class="input-group-text">
-                                        <i class="bi bi-search"></i>
-                                    </span>
-                                    <input type="text" id="keyword" name="keyword" class="form-control"
-                                        placeholder="Job title, keywords, or company">
-                                </div>
-                            </div>
-                            <!-- Location -->
-                            <div class="flex-fill">
-                                <label class="form-label visually-hidden" for="location">Location</label>
-                                <div class="input-group">
-                                    <span class="input-group-text">
-                                        <i class="bi bi-geo-alt"></i>
-                                    </span>
-                                    <input type="text" id="location" name="location" class="form-control"
-                                        placeholder="City or postcode">
-                                </div>
-                            </div>
-
-                            <!-- Search Button -->
-                            <div>
-                                <button type="submit" class="btn btn-primary px-4 py-2 w-100">
-                                    Find Jobs
-                                </button>
-                            </div>
+        <div class="max-w-4xl mx-auto mt-4">
+            <form id="jobSearchForm" action="{{ route('jobs.search') }}" method="GET">
+                <div class="bg-white p-4 rounded shadow flex flex-row items-stretch gap-3 mb-3">
+                    <!-- Keyword / Company -->
+                    <div class="flex-1 min-w-0">
+                        <label class="form-label visually-hidden" for="keyword">Keyword</label>
+                        <label class="sr-only" for="keyword">Keyword</label>
+                        <div class="flex items-center border rounded overflow-hidden">
+                            <span class="px-3 text-gray-500"><i class="bi bi-search"></i></span>
+                            <input type="text" id="keyword" name="keyword" class="flex-1 px-2 py-2 outline-none"
+                                placeholder="Job title, keywords, or company">
                         </div>
-                    </form>
+                    </div>
+                    <!-- Location -->
+                    <div class="flex-1 min-w-0">
+                        <label class="form-label visually-hidden" for="location">Location</label>
+                        <label class="sr-only" for="location">Location</label>
+                        <div class="flex items-center border rounded overflow-hidden">
+                            <span class="px-3 text-gray-500"><i class="bi bi-geo-alt"></i></span>
+                            <input type="text" id="location" name="location" class="flex-1 px-2 py-2 outline-none"
+                                placeholder="City or postcode">
+                        </div>
+                    </div>
+
+                    <!-- Search Button -->
+                    <div class="flex items-center mt-6">
+                        <button type="submit"
+                            class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition whitespace-nowrap">
+                            Find Jobs
+                        </button>
+                    </div>
                 </div>
-            </div>
+            </form>
+        </div>
+        </div>
         </div>
         @if (session('success'))
             <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -136,13 +128,11 @@
                                     data-id="{{ $job->id }}">
                                     <div class="flex justify-between items-center">
                                         <h4 class="font-semibold text-gray-800 text-lg">{{ $job->job_title }}</h4>
-                                        @auth
-                                            @if (auth()->user()->type === 'user')
-                                                <i class="bi {{ auth()->user()->savedJobs->contains($job->id) ? 'bi-bookmark-fill text-blue-600' : 'bi-bookmark' }}
+                                        @if (auth()->user()->type === 'user')
+                                            <i class="bi {{ auth()->user()->savedJobs->contains($job->id) ? 'bi-bookmark-fill text-blue-600' : 'bi-bookmark' }}
                                                     cursor-pointer save-job"
-                                                    data-id="{{ $job->id }}" style="font-size: 1.5rem;"></i>
-                                            @endif
-                                        @endauth
+                                                data-id="{{ $job->id }}" style="font-size: 1.5rem;"></i>
+                                        @endif
                                     </div>
                                     <h6 class=" text-gray-800">{{ $job->company->company_name ?? 'No Company' }}</h6>
                                     <p class="text-sm text-gray-600">{{ $job->job_location }}</p>
@@ -220,33 +210,30 @@
                                                 ->exists();
                                         @endphp
                                         <div class="flex items-center gap-4 mt-3">
-                                            @auth
-                                                @if (auth()->user()->type === 'user')
-                                                    {{-- Apply Button --}}
-                                                    @if ($alreadyApplied)
-                                                        <button disabled
-                                                            class="inline-flex items-center px-6 py-2 text-sm font-semibold text-white bg-gray-500 rounded-xl shadow-md cursor-not-allowed">
-                                                            <i class="bi bi-check2-circle mr-2 text-lg"></i> Applied
-                                                        </button>
-                                                    @else
-                                                        <button id="applyNowBtn"
-                                                            data-url="{{ route('user.jobs.apply', ['job' => $latestJob->id]) }}"
-                                                            class="apply-now-button inline-flex items-center px-6 py-2 text-sm font-semibold text-white bg-gradient-to-r from-blue-600 to-blue-700 rounded-xl shadow-md hover:from-blue-700 hover:to-blue-800 focus:ring-2 focus:ring-blue-400 focus:outline-none transition duration-200 ease-in-out">
-                                                            <i class="bi bi-send-check-fill mr-2 text-lg"></i> Apply Now
-                                                        </button>
-                                                    @endif
-
-                                                    {{-- Save Job Button --}}
-                                                    <i class="bi {{ auth()->user()->savedJobs->contains($latestJob->id) ? 'bi-bookmark-fill text-blue-600' : 'bi-bookmark' }}
-                                                        cursor-pointer save-job text-2xl pb-1"
-                                                        data-id="{{ $latestJob->id }}"></i>
+                                            @if (auth()->user()->type === 'user')
+                                                {{-- Apply Button --}}
+                                                @if ($alreadyApplied)
+                                                    <button disabled
+                                                        class="inline-flex items-center px-6 py-2 text-sm font-semibold text-white bg-gray-500 rounded-xl shadow-md cursor-not-allowed">
+                                                        <i class="bi bi-check2-circle mr-2 text-lg"></i> Applied
+                                                    </button>
+                                                @else
+                                                    <button id="applyNowBtn"
+                                                        data-url="{{ route('user.jobs.apply', ['job' => $latestJob->id]) }}"
+                                                        class="apply-now-button inline-flex items-center px-6 py-2 text-sm font-semibold text-white bg-gradient-to-r from-blue-600 to-blue-700 rounded-xl shadow-md hover:from-blue-700 hover:to-blue-800 focus:ring-2 focus:ring-blue-400 focus:outline-none transition duration-200 ease-in-out">
+                                                        <i class="bi bi-send-check-fill mr-2 text-lg"></i> Apply Now
+                                                    </button>
                                                 @endif
-                                            @endauth
+
+                                                {{-- Save Job Button --}}
+                                                <i class="bi {{ auth()->user()->savedJobs->contains($latestJob->id) ? 'bi-bookmark-fill text-blue-600' : 'bi-bookmark' }}
+                                                        cursor-pointer save-job text-2xl pb-1"
+                                                    data-id="{{ $latestJob->id }}"></i>
+                                            @endif
                                         </div>
 
                                     </div>
-                                    <hr class="my-4 border-none h-1 bg-black shadow-md" />
-
+                                    <hr class="my-4 border-t bg-black" />
 
                                     <!-- Scrollable content grows dynamically -->
                                     <div class="overflow-y-auto flex-1">
@@ -258,7 +245,7 @@
                                             </div>
                                         </div>
 
-                                        <hr class="my-4 border-none h-1 bg-black shadow-md" />
+                                        <hr class="my-4 border-t bg-black" />
 
                                         <div class="mb-4 leading-loose">
                                             <h2 class="font-semibold text-lg mb-1">Full Job Description</h2>
@@ -274,55 +261,53 @@
                 </div>
             </div>
         @else
-            <section class="banner">
-                <img src="{{ asset('build/assets/images/pexel.jpg') }}" alt="People Banner" class="img-fluid w-100">
+            <section class="relative overflow-hidden max-h-[300px]">
+                <img src="{{ asset('build/assets/images/pexel.jpg') }}" alt="People Banner"
+                    class="object-cover h-full w-full">
             </section>
-            <div class="text-center py-4 container">
-                <h2 class="mb-3">Welcome to Job Verse!</h2>
-                <p class="lead mb-4">Create an account or sign in to see your personalised job recommendations.</p>
-                <a href="{{ route('register') }}" class="btn text-white mb-4 banner-btn py-2 px-5">Get Started <i
-                        class="fa-solid fa-arrow-right"></i></a>
+            <div class="text-center py-4 max-w-2xl mx-auto">
+                <h2 class="mb-3 font-semibold text-gray-800">Welcome to Job Verse!</h2>
+                <p class="text-lg text-gray-600 mb-4">Create an account or sign in to see your personalised job
+                    recommendations.</p>
+                <a href="{{ route('register') }}"
+                    class="bg-blue-600 text-white mb-4 rounded-full py-2 px-5 transition duration-300 hover:bg-blue-700 inline-block">Get
+                    Started <i class="fa-solid fa-arrow-right"></i></a>
 
-                <p class="text-muted">
+                <p class="text-sm text-gray-500 leading-7">
                     <strong>Job Verse</strong> is a modern and user-friendly job portal designed to connect job seekers
-                    with
-                    employers in a seamless and efficient way. The platform allows users to explore thousands of job
-                    listings,
-                    create personalized profiles, and receive tailored job recommendations based on their skills and
-                    interests.
-                    Employers can easily post job openings, manage applications, and find the right candidates faster.
-                    With
-                    a
-                    clean interface, secure authentication system, and responsive design, Job Verse aims to simplify the
+                    with employers in a seamless and efficient way. The platform allows users to explore thousands of
                     job
-                    search process for both individuals and organizations, making career opportunities more accessible
-                    and
+                    listings, create personalized profiles, and receive tailored job recommendations based on their
+                    skills and
+                    interests. Employers can easily post job openings, manage applications, and find the right
+                    candidates faster.
+                    With a clean interface, secure authentication system, and responsive design, Job Verse aims to
+                    simplify the
+                    job search process for both individuals and organizations, making career opportunities more
+                    accessible and
                     meaningful.
                 </p>
             </div>
         @endif
     </main>
 
-    <footer>
-        <div class="container">
-            <div class="d-flex flex-wrap justify-content-between align-items-center footer-links mb-2">
-                <div>
-                    <a href="#">Browse Jobs</a>
-                    <a href="#">Browse Companies</a>
-                    <a href="#">Countries</a>
-                    <a href="#">About</a>
-                    <a href="#">Help</a>
-                    <a href="#">ESG at Job Verse</a>
-                </div>
-                <div>
-                    <a href="#">© 2025 Job Verse</a>
-                    <a href="#">Privacy Center</a>
-                    <a href="#">Terms</a>
-                </div>
+    <footer class="bg-gray-100 border-t border-gray-300 mt-8">
+        <div class="max-w-7xl mx-auto py-6 px-4 flex flex-wrap justify-between items-center text-sm">
+            <div class="flex flex-col sm:flex-row flex-wrap gap-2 sm:gap-4 mb-2">
+                <a href="#" class="text-gray-800 hover:underline mr-4">Browse Jobs</a>
+                <a href="#" class="text-gray-800 hover:underline mr-4">Browse Companies</a>
+                <a href="#" class="text-gray-800 hover:underline mr-4">Countries</a>
+                <a href="#" class="text-gray-800 hover:underline mr-4">About</a>
+                <a href="#" class="text-gray-800 hover:underline mr-4">Help</a>
+                <a href="#" class="text-gray-800 hover:underline mr-4">ESG at Job Verse</a>
+            </div>
+            <div class="flex gap-4">
+                <a href="#" class="text-gray-800 hover:underline">© 2025 Job Verse</a>
+                <a href="#" class="text-gray-800 hover:underline">Privacy Center</a>
+                <a href="#" class="text-gray-800 hover:underline">Terms</a>
             </div>
         </div>
     </footer>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             const form = document.getElementById("jobSearchForm");
@@ -391,7 +376,8 @@
               <div class="h-6 w-24 bg-gray-300 rounded-full"></div>
             </div>
 
-            <hr class="my-6 border-none h-1 bg-black shadow-md" />
+            <hr class="my-4 border-t bg-black" />
+
 
             <!-- Location -->
             <div>
@@ -399,7 +385,8 @@
               <div class="h-4 w-1/2 bg-gray-300 rounded"></div>
             </div>
 
-            <hr class="my-4 border-none h-1 bg-black shadow-md" />
+            <hr class="my-4 border-t bg-black" />
+
 
             <!-- Job Description -->
             <div>
@@ -431,12 +418,12 @@
 
     ${data.company_website
         ? `
-                                    <h6 class="text-gray-800">
-                                      <a href="${data.company_website}" target="_blank" class="text-blue-600 hover:underline">
-                                        ${data.company_name} <i class="bi bi-box-arrow-up-right"></i>
-                                      </a>
-                                    </h6>
-                                  `
+                                                            <h6 class="text-gray-800">
+                                                              <a href="${data.company_website}" target="_blank" class="text-blue-600 hover:underline">
+                                                                ${data.company_name} <i class="bi bi-box-arrow-up-right"></i>
+                                                              </a>
+                                                            </h6>
+                                                          `
         : ''
     }
 
@@ -444,13 +431,13 @@
 
     ${data.salary_start && data.salary_end
         ? `
-                                    <div class="inline-flex items-center gap-1 text-sm text-green-800 mt-1 px-4 bg-emerald-100 py-2 rounded">
-                                      <span class="font-bold">Rs</span>
-                                    <span class="font-bold">${Number(data.salary_start).toLocaleString()}</span> -
-                                    <span class="font-bold">${Number(data.salary_end).toLocaleString()}</span>
-                                      <span class="font-bold">a month</span>
-                                    </div>
-                                  `
+                                                            <div class="inline-flex items-center gap-1 text-sm text-green-800 mt-1 px-4 bg-emerald-100 py-2 rounded">
+                                                              <span class="font-bold">Rs</span>
+                                                            <span class="font-bold">${Number(data.salary_start).toLocaleString()}</span> -
+                                                            <span class="font-bold">${Number(data.salary_end).toLocaleString()}</span>
+                                                              <span class="font-bold">a month</span>
+                                                            </div>
+                                                          `
         : ''
     }
 
@@ -461,35 +448,39 @@
     </div>
 
     <div class="flex items-center gap-4 mt-3">
+    @if (auth()->check() && auth()->user()->type === 'user')
+
   ${
     data.is_authenticated
       ? (
           (data.already_applied  || item.dataset.applied === "true")
             ? `
-                        <button disabled
-                          class="inline-flex items-center px-6 py-2 text-sm font-semibold text-white bg-gray-500 rounded-xl shadow-md cursor-not-allowed">
-                          <i class="bi bi-check2-circle mr-2 text-lg"></i> Applied
-                        </button>
-                      `
+                                                <button disabled
+                                                  class="inline-flex items-center px-6 py-2 text-sm font-semibold text-white bg-gray-500 rounded-xl shadow-md cursor-not-allowed">
+                                                  <i class="bi bi-check2-circle mr-2 text-lg"></i> Applied
+                                                </button>
+                                              `
             : `
-                        <button data-url="${data.apply_url}"
-                          class="apply-now-button inline-flex items-center px-6 py-2 text-sm font-semibold text-white bg-gradient-to-r from-blue-600 to-blue-700 rounded-xl shadow-md hover:from-blue-700 hover:to-blue-800 focus:ring-2 focus:ring-blue-400 focus:outline-none transition duration-200 ease-in-out">
-                          <i class="bi bi-send-check-fill mr-2 text-lg"></i> Apply Now
-                        </button>
-                      `
+                                                <button data-url="${data.apply_url}"
+                                                  class="apply-now-button inline-flex items-center px-6 py-2 text-sm font-semibold text-white bg-gradient-to-r from-blue-600 to-blue-700 rounded-xl shadow-md hover:from-blue-700 hover:to-blue-800 focus:ring-2 focus:ring-blue-400 focus:outline-none transition duration-200 ease-in-out">
+                                                  <i class="bi bi-send-check-fill mr-2 text-lg"></i> Apply Now
+                                                </button>
+                                              `
         ) + `
-                    <i class="bi ${data.is_saved ? 'bi-bookmark-fill text-blue-600' : 'bi-bookmark'}
-                      cursor-pointer save-job text-2xl pb-1"
-                      data-id="${data.id}"></i>
-                  `
+                                            <i class="bi ${data.is_saved ? 'bi-bookmark-fill text-blue-600' : 'bi-bookmark'}
+                                              cursor-pointer save-job text-2xl pb-1"
+                                              data-id="${data.id}"></i>
+                                          `
       : `<a href="/login" class="text-blue-600 hover:underline">Login to apply</a>`
   }
+      @endif
 </div>
 
 
   </div>
 
-  <hr class="my-6 border-none h-1 bg-black shadow-md" />
+    <hr class="my-4 border-t bg-black" />
+
 
   <!-- Scrollable content grows dynamically -->
   <div class="overflow-y-auto flex-1">
@@ -501,7 +492,8 @@
       </div>
     </div>
 
-    <hr class="my-4 border-none h-1 bg-black shadow-md" />
+    <hr class="my-4 border-t bg-black" />
+
 
     <div class="mb-4 leading-loose">
       <h2 class="font-semibold text-lg mb-1">Full Job Description</h2>

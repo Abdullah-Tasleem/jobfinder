@@ -10,7 +10,7 @@ class JobController extends Controller
 {
     public function index()
     {
-        $jobs = JobPost::all();
+        $jobs = JobPost::latest()->paginate(10);
         return view('admin.jobs.index', compact('jobs'));
     }
 

@@ -1,3 +1,6 @@
+<!DOCTYPE html>
+<html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -5,85 +8,66 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Job Finder</title>
 
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css"
         integrity="sha512-DxV+EoADOkOygM4IR9yXP8Sb2qwgidEmeqAEmDKIOfPRQZOWbXCzLC6vjbZyy0vPisbH2SyW27+ddLVCN+OMzQ=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-    <!-- ✅ Bootstrap Icons -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-
-    <!-- Your Custom CSS -->
-    <link rel="stylesheet" href="{{ asset('build/assets/css/main.css') }}">
+    <!-- ✅ Only Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        #resumeDropzone .dz-preview {
-            @apply flex flex-col items-center mx-auto;
-        }
-    </style>
 </head>
 
-
-<body>
-    <nav class="navbar navbar-expand-lg bg-white border-bottom px-4 py-2">
-        <div class="container-fluid">
+<body style="font-family: 'Poppins', sans-serif;">
+    <nav class="bg-white border-b px-4 py-4">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
             <!-- Left: Logo + Home -->
-            <a class="navbar-brand d-flex align-items-center" href="#">
-                <img src="{{ asset('design.png') }}" alt="Logo" height="20" width="40" class="me-2">
-                <p class="mb-0">Home</p>
+            <a class="flex items-center" href="{{ route('home') }}">
+                <img src="{{ asset('design.png') }}" alt="Logo" class="h-5 w-10 mr-2" />
+                <span class="font-bold text-lg">Home</span>
             </a>
 
             <!-- Right: Links -->
-            <div class="ms-auto d-flex align-items-center gap-2 pe-3">
+            <div class="flex items-center gap-2 ml-auto pr-3">
                 @guest
-                    <a class="btn btn-outline-dark btn-sm px-4" href="{{ route('login') }}">
+                    <a class="border border-gray-800 text-gray-800 rounded px-4 py-1 text-sm hover:bg-gray-100 transition"
+                        href="{{ route('login') }}">
                         Sign In
                     </a>
-
-                    <a class="btn btn-primary btn-sm px-4 text-white" href="{{ route('company.registerform') }}">
+                    <a class="bg-blue-600 text-white rounded px-4 py-1 text-sm hover:bg-blue-700 transition"
+                        href="{{ route('company.registerform') }}">
                         Company / Post Job
                     </a>
                 @endguest
+
                 @auth
                     @if (auth()->user()->type === 'user')
-                        <a href="{{ route('saved.jobs') }}" class="text-dark position-relative">
-                            <i class="bi bi-bookmark-fill fs-5"></i>
+                        <a href="{{ route('saved.jobs') }}" class="relative text-gray-800 pr-3">
+                            <i class="bi bi-bookmark-fill text-xl"></i>
                             @if (session('saved_jobs_count', 0) > 0)
                                 <span
-                                    class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                    class="absolute -top-2 -right-2 bg-red-600 text-white rounded-full px-2 py-0.5 text-xs">
                                     {{ session('saved_jobs_count') }}
                                 </span>
                             @endif
                         </a>
                     @endif
+
+                    <a href="{{ route('profile.edit') }}">
+                        <i class="fa-solid fa-user text-xl"></i>
+                    </a>
                 @endauth
             </div>
         </div>
     </nav>
-
     <main>
         <div class="container mx-auto p-4 max-w-xl">
             <h1 class="text-xl font-bold mb-4">Apply for Job</h1>
-
-            @if (session('success'))
-                <script>
-                    document.addEventListener("DOMContentLoaded", function() {
-                        Swal.fire({
-                            icon: "success",
-                            title: "Success!",
-                            text: "{{ session('success') }}",
-                            confirmButtonColor: "#3085d6"
-                        });
-                    });
-                </script>
-            @endif
-
             @if ($errors->any())
                 <script>
                     document.addEventListener("DOMContentLoaded", function() {
@@ -96,8 +80,6 @@
                     });
                 </script>
             @endif
-
-
             <form id="applicationForm" action="{{ route('user.jobs.submit.application', ['job' => $job->id]) }}"
                 method="POST">
                 @csrf
@@ -114,22 +96,20 @@
             </form>
         </div>
     </main>
-    <footer class="mt-48">
-        <div class="container">
-            <div class="d-flex flex-wrap justify-content-between align-items-center footer-links mb-2">
-                <div>
-                    <a href="#">Browse Jobs</a>
-                    <a href="#">Browse Companies</a>
-                    <a href="#">Countries</a>
-                    <a href="#">About</a>
-                    <a href="#">Help</a>
-                    <a href="#">ESG at Job Verse</a>
-                </div>
-                <div>
-                    <a href="#">© 2025 Job Verse</a>
-                    <a href="#">Privacy Center</a>
-                    <a href="#">Terms</a>
-                </div>
+    <footer class="bg-gray-100 border-t border-gray-300 mt-60">
+        <div class="max-w-7xl mx-auto py-6 px-4 flex flex-wrap justify-between items-center text-sm">
+            <div class="flex flex-col sm:flex-row flex-wrap gap-2 sm:gap-4 mb-2">
+                <a href="#" class="text-gray-800 hover:underline mr-4">Browse Jobs</a>
+                <a href="#" class="text-gray-800 hover:underline mr-4">Browse Companies</a>
+                <a href="#" class="text-gray-800 hover:underline mr-4">Countries</a>
+                <a href="#" class="text-gray-800 hover:underline mr-4">About</a>
+                <a href="#" class="text-gray-800 hover:underline mr-4">Help</a>
+                <a href="#" class="text-gray-800 hover:underline mr-4">ESG at Job Verse</a>
+            </div>
+            <div class="flex gap-4">
+                <a href="#" class="text-gray-800 hover:underline">© 2025 Job Verse</a>
+                <a href="#" class="text-gray-800 hover:underline">Privacy Center</a>
+                <a href="#" class="text-gray-800 hover:underline">Terms</a>
             </div>
         </div>
     </footer>

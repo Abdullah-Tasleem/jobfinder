@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('job_id')->constrained('job_posts')->onDelete('cascade');
             $table->string('resume');
+            $table->foreignId('withdraw_reason_id')->nullable()->constrained('withdraw_reasons')->onDelete('set null');
             $table->timestamps();
         });
     }

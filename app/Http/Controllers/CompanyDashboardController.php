@@ -16,7 +16,6 @@ class CompanyDashboardController extends Controller
 
         $latestJob = JobPost::with('company')
             ->where('company_id', auth()->id())
-            ->where('job_status', 'active')
             ->latest()
             ->first();
 

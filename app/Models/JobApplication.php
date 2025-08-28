@@ -13,9 +13,18 @@ class JobApplication extends Model
         'user_id',
         'job_id',
         'resume',
+        'withdraw_reason_id',
     ];
     public function jobPost()
     {
         return $this->belongsTo(JobPost::class, 'job_id');
+    }
+    public function withdrawReason()
+    {
+        return $this->belongsTo(WithdrawReason::class);
+    }
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

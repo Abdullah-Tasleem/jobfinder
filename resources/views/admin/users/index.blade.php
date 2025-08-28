@@ -55,8 +55,27 @@
                             @endforeach
                         </tbody>
                     </table>
+                    <div class="mt-4">
+                        {{ $users->links() }}
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+    @push('scripts')
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                @if (session('success'))
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success!',
+                        text: '{{ session('success') }}',
+                        showConfirmButton: false,
+                        timer: 2000
+                    });
+                @endif
+            });
+        </script>
+    @endpush
 </x-app-layout>

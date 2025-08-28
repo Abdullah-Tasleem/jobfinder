@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('job_posts', function (Blueprint $table) {
             $table->id();
             $table->string('job_title');
-            $table->enum('job_status', ['draft','pending','active','inactive','filled','expired','rejected',])->default('active');
+            $table->enum('job_status', ['draft','pending','active','inactive','filled','expired','rejected'])->default('pending');
             $table->enum('job_type', ['hybrid', 'on-site', 'remote']);
             $table->integer('salary_start')->nullable();
             $table->integer('salary_end')->nullable();

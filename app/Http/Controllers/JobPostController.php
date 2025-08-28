@@ -22,7 +22,6 @@ class JobPostController extends Controller
         return view('company.jobs.index', compact('jobs'));
     }
 
-
     // Show form to create new job
     public function create()
     {
@@ -142,39 +141,7 @@ class JobPostController extends Controller
             abort(403);
         }
     }
-// public function showAjax($id)
-// {
-//     $job = JobPost::with('company')->findOrFail($id);
-//     $user = auth()->user();
 
-//     $alreadyApplied = false;
-//     $isSaved = false;
-
-//     if ($user && $user->type === 'user') {
-//         $alreadyApplied = JobApplication::where('user_id', $user->id)
-//             ->where('job_id', $job->id)
-//             ->exists();
-
-//         $isSaved = $user->savedJobs->contains($job->id);
-//     }
-
-//     return response()->json([
-//         'id' => $job->id,
-//         'title' => $job->job_title,
-//         'job_type' => $job->job_type,
-//         'job_location' => $job->job_location,
-//         'job_description' => $job->job_description,
-//         'salary_start' => $job->salary_start,
-//         'salary_end' => $job->salary_end,
-//         'country' => $job->company->country ?? '',
-//         'company_name' => $job->company->company_name ?? '',
-//         'company_website' => $job->company->company_website ?? '',
-//         'apply_url' => route('user.jobs.apply', ['job' => $job->id]),
-//         'is_authenticated' => auth()->check(),
-//         'already_applied' => $alreadyApplied,
-//         'is_saved' => $isSaved,
-//     ]);
-// }
     public function showAjax($id)
     {
         $job = JobPost::with('company')->findOrFail($id);

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\JobApplication;
 use App\Models\JobPost;
+use App\Models\WithdrawReason;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -46,8 +47,8 @@ class JobApplicationController extends Controller
         ]);
 
         if ($request->ajax()) {
-        return response()->json(['success' => true, 'message' => 'Application submitted successfully.']);
-    }
+            return response()->json(['success' => true, 'message' => 'Application submitted successfully.']);
+        }
 
         return redirect()->route('home')->with('success', 'Application submitted successfully.');
     }
@@ -106,10 +107,20 @@ class JobApplicationController extends Controller
     }
     public function appliedJobs()
     {
-        $appliedJobs = JobApplication::with('jobPost.company')
+        $appliedJobs = JobApplication::with(['jobPost.company'])->where('user_id', auth()->id())->whereNull('withdraw_reason_id')->get();
+        $withdrawReasons = WithdrawReason::where('status', 1)->get();
+        return view('user.jobs.applied', compact('appliedJobs', 'withdrawReasons'));
+    }
+    public function withdraw($id, Request $request)
+    {
+        $application = JobApplication::where('id', $id)
             ->where('user_id', auth()->id())
-            ->latest()
-            ->get();
-        return view('user.jobs.applied', compact('appliedJobs'));
+            ->firstOrFail();
+
+        // withdraw_reason_id set karo
+        $application->withdraw_reason_id = $request->reason_id;
+        $application->save();
+
+        return response()->json(['success' => true]);
     }
 }
