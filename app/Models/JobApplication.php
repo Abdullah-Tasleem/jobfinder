@@ -14,6 +14,11 @@ class JobApplication extends Model
         'job_id',
         'resume',
         'withdraw_reason_id',
+        'status',
+        'is_seen',
+    ];
+    protected $casts = [
+        'is_seen' => 'boolean',
     ];
     public function jobPost()
     {

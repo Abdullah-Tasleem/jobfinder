@@ -14,6 +14,7 @@
                                 <th class="px-4 py-2 border">Title</th>
                                 <th class="px-4 py-2 border">Company</th>
                                 <th class="px-4 py-2 border">Status</th>
+                                <th class="px-4 py-2 border">Change Status</th>
                                 <th class="px-4 py-2 border">Actions</th>
                             </tr>
                         </thead>
@@ -24,26 +25,48 @@
                                     <td class="px-4 py-2 border">{{ $job->job_title }}</td>
                                     <td class="px-4 py-2 border">{{ $job->company->company_name ?? 'N/A' }}</td>
                                     <td class="px-4 py-2 border">
-                                        @if ($job->job_status == 'active')
-                                            <span
-                                                class="px-2 py-1 text-xs bg-green-200 text-green-800 rounded">Active</span>
-                                        @else
-                                            <span
-                                                class="px-2 py-1 text-xs bg-yellow-200 text-yellow-800 rounded">Pending</span>
-                                        @endif
+                                        @switch($job->job_status)
+                                            @case('inactive')
+                                                <span
+                                                    class="px-2 py-1 text-xs bg-yellow-200 text-yellow-800 rounded">Inactive</span>
+                                            @break
+
+                                            @case('active')
+                                                <span
+                                                    class="px-2 py-1 text-xs bg-green-200 text-green-800 rounded">Active</span>
+                                            @break
+
+                                            @case('pending')
+                                                <span
+                                                    class="px-2 py-1 text-xs bg-violet-200 text-violet-800 rounded">Pending</span>
+                                            @break
+
+                                            @case('expired')
+                                                <span class="px-2 py-1 text-xs bg-red-200 text-red-800 rounded">Expired</span>
+                                            @break
+
+                                            @default
+                                                <span class="px-2 py-1 text-xs bg-gray-300 text-gray-900 rounded">Unknown</span>
+                                        @endswitch
                                     </td>
-                                    <td class="px-4 py-2 border flex justify-center gap-2">
-                                        <!-- Toggle status -->
-                                        <form action="{{ route('admin.jobs.toggleStatus', $job->id) }}" method="POST">
+                                    <td class="border px-4 py-2">
+                                        <form action="{{ route('admin.jobs.updateStatus', $job->id) }}" method="POST"
+                                            class="inline">
                                             @csrf
                                             @method('PATCH')
-                                            <button type="submit"
-                                                class="px-3 py-1 rounded text-white
-                                                    {{ $job->job_status == 'active' ? 'bg-yellow-600 hover:bg-yellow-700' : 'bg-green-600 hover:bg-green-700' }}">
-                                                {{ $job->job_status == 'active' ? 'Deactivate' : 'Activate' }}
-                                            </button>
-                                        </form>
+                                            <select name="job_status" onchange="this.form.submit()"
+                                                class="border rounded px-2 py-1 capitalize text-sm focus:ring-indigo-500 focus:border-indigo-500">
 
+                                                @foreach (['draft', 'inactive', 'active', 'filled', 'expired'] as $status)
+                                                    <option value="{{ $status }}"
+                                                        {{ $job->job_status === $status ? 'selected' : '' }}>
+                                                        {{ ucfirst($status) }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </form>
+                                    </td>
+                                    <td class="px-4 py-2 border flex justify-center gap-2">
                                         <!-- Delete -->
                                         <form action="{{ route('admin.jobs.destroy', $job->id) }}" method="POST">
                                             @csrf

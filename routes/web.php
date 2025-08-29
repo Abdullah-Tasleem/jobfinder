@@ -4,14 +4,15 @@ use App\Http\Controllers\Admin\IndustryController;
 use App\Http\Controllers\Admin\JobController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\WithdrawReasonController;
-use App\Http\Controllers\AdminDashboardController;
+use App\Http\Controllers\Admin\DashboardController as AdminDashboard;
 use App\Http\Controllers\Auth\CompanyAuthController;
 use App\Http\Controllers\Auth\ProviderController;
-use App\Http\Controllers\CompanyDashboardController;
+use App\Http\Controllers\Company\DashboardController as CompanyDashboard;
+use App\Http\Controllers\Company\JobApplicationController as CompanyJobApplicationController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\JobApplicationController;
-use App\Http\Controllers\JobPostController;
+use App\Http\Controllers\Company\JobPostController;
 use App\Http\Controllers\JobSearchController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserDashboardController;
@@ -36,10 +37,10 @@ Route::get('/auth/{provider}/callback', [ProviderController::class, 'callback'])
 Route::get('/user/dashboard', [UserDashboardController::class, 'index'])->middleware(['auth', 'user'])->name('user.dashboard');
 
 // Company Dashboard
-Route::get('/company/dashboard', [CompanyDashboardController::class, 'index'])->middleware(['auth', 'company'])->name('company.dashboard');
+Route::get('/company/dashboard', [CompanyDashboard::class, 'index'])->middleware(['auth', 'company'])->name('company.dashboard');
 
 // Admin Dashboard
-Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])->middleware(['auth', 'admin'])->name('admin.dashboard');
+Route::get('/admin/dashboard', [AdminDashboard::class, 'index'])->middleware(['auth', 'admin'])->name('admin.dashboard');
 
 
 Route::middleware('auth')->group(function () {
@@ -60,6 +61,12 @@ Route::put('company/jobs/{job}', [JobPostController::class, 'update'])->name('co
 Route::patch('company/jobs/{job}/status', [JobPostController::class, 'updateStatus'])->name('company.jobs.updateStatus')->middleware(['auth', 'company']);
 Route::delete('company/jobs/{job}', [JobPostController::class, 'destroy'])->name('company.jobs.destroy')->middleware(['auth', 'company']);
 Route::get('company/jobs/{id}/ajax', [JobPostController::class, 'showAjax'])->name('company.jobs.showAjax')->middleware(['auth', 'company']);
+
+Route::get('/company/applications', [CompanyJobApplicationController::class, 'index'])->name('company.applications.index')->middleware(['auth', 'company']);
+Route::get('/company/applications/{id}', [CompanyJobApplicationController::class, 'show'])->name('company.applications.show')->middleware(['auth', 'company']);
+Route::put('/company/applications/{id}', [CompanyJobApplicationController::class, 'update'])->name('company.applications.update')->middleware(['auth', 'company']);
+Route::delete('/company/applications/{id}', [CompanyJobApplicationController::class, 'destroy'])->name('company.applications.destroy')->middleware(['auth', 'company']);
+Route::get('/company/applications/{id}/resume', [CompanyJobApplicationController::class, 'downloadResume'])->name('company.applications.resume')->middleware(['auth', 'company']);
 
 //  ---User Routes--
 Route::get('/company/jobs/{id}/ajax', [JobApplicationController::class, 'showAjax']);
@@ -88,8 +95,9 @@ Route::patch('admin/users/{user}/toggle-status', [UserController::class, 'toggle
 
 // Jobs
 Route::get('admin/jobs', [JobController::class, 'index'])->middleware(['auth', 'admin'])->name('admin.jobs.index');
-Route::patch('admin/jobs/{job}/toggle-status', [JobController::class, 'toggleStatus'])->middleware(['auth', 'admin'])->name('admin.jobs.toggleStatus');
 Route::delete('admin/jobs/{job}', [JobController::class, 'destroy'])->middleware(['auth', 'admin'])->name('admin.jobs.destroy');
+Route::patch('admin/jobs/{id}/status', [JobController::class, 'updateStatus'])->middleware(['auth', 'admin'])->name('admin.jobs.updateStatus');
+
 
 Route::get('admin/withdraw-reasons', [WithdrawReasonController::class, 'index'])->middleware(['auth', 'admin'])->name('admin.withdraw-reasons.index');
 Route::get('admin/withdraw-reasons/create', [WithdrawReasonController::class, 'create'])->middleware(['auth', 'admin'])->name('admin.withdraw-reasons.create');

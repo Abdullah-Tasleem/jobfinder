@@ -38,6 +38,9 @@
                             <x-nav-link :href="route('company.jobs.index')" :active="request()->routeIs('company.jobs.*')">
                                 {{ __('Jobs') }}
                             </x-nav-link>
+                            <x-nav-link :href="route('company.applications.index')" :active="request()->routeIs('company.applications.*')">
+                                {{ __('Job Applications') }}
+                            </x-nav-link>
                         @elseif (Auth::user()->type === 'user')
                             <x-nav-link :href="route('saved.jobs')" :active="request()->routeIs('saved.jobs')">
                                 {{ __('Saved Jobs') }}
@@ -103,10 +106,9 @@
                         <!-- Authentication -->
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
-
                             <x-dropdown-link :href="route('logout')"
                                 onclick="event.preventDefault();
-                                                this.closest('form').submit();">
+                                    this.closest('form').submit();">
                                 {{ __('Log Out') }}
                             </x-dropdown-link>
                         </form>

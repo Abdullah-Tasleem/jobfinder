@@ -30,8 +30,10 @@
                             <td class="border px-4 py-2">{{ $job->job_title }}</td>
                             <td class="border px-4 py-2 capitalize">{{ $job->job_status }}</td>
                             <td class="border px-4 py-2 capitalize">{{ $job->job_type }}</td>
-                            <td class="border px-4 py-2">{{ $job->salary_start ?? 'N/A' }} Pkr -
-                                {{ $job->salary_end ?? 'N/A' }} Pkr</td>
+                            <td class="border px-4 py-2">
+                                {{ $job->salary_start ? number_format($job->salary_start) : 'N/A' }} Pkr -
+                                {{ $job->salary_end ? number_format($job->salary_end) : 'N/A' }} Pkr
+                            </td>
                             <td class="border px-4 py-2">{{ $job->industry->name ?? 'N/A' }}</td>
                             <td class="border px-4 py-2 space-x-2">
                                 <a href="{{ route('company.jobs.edit', $job->id) }}"
@@ -55,7 +57,6 @@
                                     </select>
                                 </form>
                             </td>
-
                         </tr>
                     @endforeach
                 </tbody>

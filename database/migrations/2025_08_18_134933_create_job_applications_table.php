@@ -17,6 +17,9 @@ return new class extends Migration
             $table->foreignId('job_id')->constrained('job_posts')->onDelete('cascade');
             $table->string('resume');
             $table->foreignId('withdraw_reason_id')->nullable()->constrained('withdraw_reasons')->onDelete('set null');
+            $table->enum('status', ['pending', 'seen', 'accepted', 'rejected'])
+                ->default('pending');
+            $table->boolean('is_seen')->default(false);
             $table->timestamps();
         });
     }

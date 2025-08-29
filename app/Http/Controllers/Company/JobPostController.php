@@ -1,8 +1,9 @@
 <?php
 // app/Http/Controllers/CompanyJobController.php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Company;
 
+use App\Http\Controllers\Controller;
 use App\Models\Industry;
 use App\Models\JobApplication;
 use App\Models\JobPost;
