@@ -110,7 +110,7 @@ class JobApplicationController extends Controller
      */
    public function downloadResume($id)
 {
-    $application = JobApplication::where('id', $id) // ✅ correct
+    $application = JobApplication::where('id', $id) 
         ->whereHas('jobPost', function ($q) {
             $q->where('company_id', Auth::id());
         })->firstOrFail();
